@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import time
+import json                                 #save data as .json
 
 # URL of the Rotten Tomatoes page to scrape
 URL = 'https://editorial.rottentomatoes.com/guide/best-netflix-movies-to-watch-right-now/'
@@ -47,3 +48,19 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#===========================================
+def save_scraped_data(movies_data):
+    with open('movies_data.json', 'w') as file:
+        json.dump(movies_data, file, indent=4)
+
+#assuming movies_data is the list of dictionaries with director and rating
+movies_data = [
+    {'director': 'Director A', 'rating': 85},
+    {'director': 'Director B', 'rating': 90},
+    {'director': 'Director A', 'rating': 80},
+    {'director': 'Director C', 'rating': 70},
+    # Add more data here after scraping
+]
+
+save_scraped_data(movies_data)
