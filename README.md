@@ -6,7 +6,11 @@ This project is a web scraper designed to extract movie director names and their
 ### Data Extracted:
 - **Director Names**: The scraper extracts the names of the movie directors.
 - **Ratings**: The movie ratings (as percentages) from Rotten Tomatoes are also scraped.
-   - **Ratings**: The movie ratings (as percentages) from Rotten Tomatoes are also scraped.
+   - **Title** - We scraped the titles but decided not to use them in data analysis.
+   - **Critics Consensus** - Same as above.
+   - **Synopsis** - Same as above.
+   - **Cast** - Same as above.
+ 
 ### Purpose:
 The purpose of this project is to provide an automated method of gathering movie data for analysis. By scraping Rotten Tomatoes, we can uncover which directors consistently produce high-rated movies and which don't, providing insights into their success and the reception of their films. The final analysis involves calculating the average rating of each director’s movies and ranking them in descending order.
 
