@@ -1,49 +1,62 @@
-
 import requests
 from bs4 import BeautifulSoup
-import csv
+import time
+import json                                 #save data as .json
 
-def scrape_movie_info(url):
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    
+# URL of the Rotten Tomatoes page to scrape
+URL = 'https://editorial.rottentomatoes.com/guide/best-netflix-movies-to-watch-right-now/'
+
+def fetch_page(url):
+    """Fetches the content of the page using requests."""
+    try:
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        return response.text
+    except requests.RequestException as e:
+        print(f"Error fetching page: {e}")
+        return None
+
+def parse_page(html):
+    """Parses the page content to extract movie names and ratings."""
+    soup = BeautifulSoup(html, 'html.parser')
     movies = []
-    
-    for item in soup.find_all('div', class_='countdown-item-content'):
-        title = item.find('h2').text.strip()
-        rating = item.find('div', class_='countdown-adjusted-score').text.strip()
-        
-        critics_consensus = item.find('div', class_='info critics-consensus').text.strip()
-        synopsis = item.find('div', class_='info synopsis').text.strip()
-        
-        cast = item.find('div', class_='info cast').text.strip()
-        director = item.find('div', class_='info director').text.strip()
-        
-        movies.append({
-            'title': title,
-            'rating': rating,
-            'critics_consensus': critics_consensus,
-            'synopsis': synopsis,
-            'cast': cast,
-            'director': director
-        })
+
+    # Locate the blocks containing both the title and rating
+    for item in soup.find_all('div', class_='col-sm-20 col-full-xs'):
+        #title_tag = item.find('a')  # Movie title is in the <a> tag
+        #title = title_tag.text.strip() if title_tag else 'N/A'
+
+        #get director's names
+        director_tag = item.find('p', class_='director')
+        director = director_tag.text.strip() if director_tag else 'N/A'
+
+        # The rating is inside the <span> with class tMeterScore
+        rating_tag = item.find('span', class_='tMeterScore')
+        rating = rating_tag.text.strip() if rating_tag else 'N/A'
+
+#       movies.append({'title': title, 'rating': rating})
+        movies.append({'director': director, 'rating': rating})
     
     return movies
 
-def save_to_csv(movies, filename):
-    with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
-        fieldnames = ['title', 'rating', 'critics_consensus', 'synopsis', 'cast', 'director']
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        
-        writer.writeheader()
-        for movie in movies:
-            writer.writerow(movie)
+#===========================================
+#save the scraped movie data to a JSON file.
+def save_scraped_data(movies_data):
+    with open('movies_data.json', 'w') as file:
+        json.dump(movies_data, file, indent=4)
+    print("Data saved to movies_data.json")
+#===========================================
 
-# Usage
-url = 'https://editorial.rottentomatoes.com/guide/popular-movies/'
-movie_data = scrape_movie_info(url)
+def main():
+    html = fetch_page(URL)
+    if html:
+        movies = parse_page(html)
+        save_scraped_data(movies)
+        # Respectful scraping: Add delay between requests
+        time.sleep(1)
 
-# Save to CSV
-save_to_csv(movie_data, 'movies.csv')
-
-print(f"Data has been saved to movies.csv")
+if __name__ == "__main__":
+    main()
