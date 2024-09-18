@@ -15,7 +15,11 @@ def analyze_directors():
     #populate the dictionary with ratings for each director
     for movie in movies_data:
         director = movie['director']
-        rating = movie['rating']
+        try:
+            rating = int(movie['rating'].strip('%'))
+        except ValueError:
+            continue
+#        rating = movie['rating']
         if director not in director_ratings:
             director_ratings[director] = []
         director_ratings[director].append(rating)

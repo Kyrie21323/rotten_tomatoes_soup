@@ -29,38 +29,34 @@ def parse_page(html):
         title_tag = item.find('a')  # Movie title is in the <a> tag
         title = title_tag.text.strip() if title_tag else 'N/A'
 
+        #get director's names
+        director_tag = item.find('p', class_='director')
+        director = director_tag.text.strip() if director_tag else 'N/A'
+
         # The rating is inside the <span> with class tMeterScore
         rating_tag = item.find('span', class_='tMeterScore')
         rating = rating_tag.text.strip() if rating_tag else 'N/A'
 
-        movies.append({'title': title, 'rating': rating})
+#       movies.append({'title': title, 'rating': rating})
+        movies.append({'title': title, 'director': director, 'rating': rating})
     
     return movies
+
+#===========================================
+#save the scraped movie data to a JSON file.
+def save_scraped_data(movies_data):
+    with open('movies_data.json', 'w') as file:
+        json.dump(movies_data, file, indent=4)
+    print("Data saved to movies_data.json")
+#===========================================
 
 def main():
     html = fetch_page(URL)
     if html:
         movies = parse_page(html)
-        for movie in movies:
-            print(f"Title: {movie['title']}, Rating: {movie['rating']}")
+        save_scraped_data(movies)
         # Respectful scraping: Add delay between requests
         time.sleep(1)
 
 if __name__ == "__main__":
     main()
-
-#===========================================
-def save_scraped_data(movies_data):
-    with open('movies_data.json', 'w') as file:
-        json.dump(movies_data, file, indent=4)
-
-#assuming movies_data is the list of dictionaries with director and rating
-movies_data = [
-    {'director': 'Director A', 'rating': 85},
-    {'director': 'Director B', 'rating': 90},
-    {'director': 'Director A', 'rating': 80},
-    {'director': 'Director C', 'rating': 70},
-    # Add more data here after scraping
-]
-
-save_scraped_data(movies_data)
