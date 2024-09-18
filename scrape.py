@@ -6,7 +6,7 @@ import pandas as pd
 import time
 
 # Path to your ChromeDriver
-webdriver_path = ' /yaghyesh/local/bin/chromedriver'
+webdriver_path = 'C:/Users/2028e/Documents/chromedriver-win64/chromedriver.exe'
 
 # Initialize the Chrome WebDriver
 service = Service(webdriver_path)
