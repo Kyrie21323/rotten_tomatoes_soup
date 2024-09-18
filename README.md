@@ -1,26 +1,22 @@
 # rotten_tomatoes_soup
 ## Project Description
 
-This project is a web scraper designed to extract movie director names and their corresponding movie ratings from the **Rotten Tomatoes** website. It uses **Selenium** to automate the browser, allowing the scraper to navigate to each movie's page and gather the necessary information. The primary goal of this project is to generate insights by calculating the average rating of movies directed by each director.
+This project is a web scraper that extracts movie director names and corresponding movie ratings from an archived version of the **Rotten Tomatoes** website using **requests** and **BeautifulSoup**. The primary goal of this project is to scrape and analyze movie ratings to calculate the average rating of movies directed by each director, and rank them in descending order. Additionally, the project outputs the top 10 and bottom 10 directors based on their average ratings.
 
 ### Data Extracted:
-- **Director Names**: The scraper extracts the names of the movie directors.
-- **Ratings**: The movie ratings (as percentages) from Rotten Tomatoes are also scraped.
-   - **Title** - We scraped the titles but decided not to use them in data analysis.
-   - **Critics Consensus** - Same as above.
-   - **Synopsis** - Same as above.
-   - **Cast** - Same as above.
- 
+- **Director Names**: The scraper extracts the names of movie directors from each movie's details.
+- **Ratings**: The scraper also extracts movie ratings (as percentages) from Rotten Tomatoes.
+
 ### Purpose:
-The purpose of this project is to provide an automated method of gathering movie data for analysis. By scraping Rotten Tomatoes, we can uncover which directors consistently produce high-rated movies and which don't, providing insights into their success and the reception of their films. The final analysis involves calculating the average rating of each director’s movies and ranking them in descending order.
+This project automates the process of gathering movie rating data for directors to provide insights into which directors consistently produce high-rated movies and which do not. The data is then processed to compute the average ratings for each director, allowing us to identify the top and bottom performing directors based on Rotten Tomatoes ratings.
 
 ---
 
 ## Website Used
 
-We chose **[Rotten Tomatoes](https://www.rottentomatoes.com/)** as the website for scraping due to its reputation as a trusted and widely used platform for movie reviews and ratings. Rotten Tomatoes aggregates movie reviews from critics and audience members, making it an ideal source for unbiased and widely accepted movie ratings.
+We chose the **[archived version of Rotten Tomatoes](https://web.archive.org/web/20240916202321/https://editorial.rottentomatoes.com/guide/best-netflix-movies-to-watch-right-now/)** for scraping due to its rich data on movie reviews and ratings. The archived version is used to ensure stable access to the page content.
 
-Rotten Tomatoes does not have an easily accessible public API for this kind of data, making this scraper a valuable tool for gathering such information.
+The Rotten Tomatoes website is a popular source for both critic and audience movie reviews and ratings, making it an ideal platform for this project. Rotten Tomatoes does not provide a public API for this specific type of data, so we opted for web scraping to obtain the required information.
 
 ---
 
@@ -30,10 +26,9 @@ Rotten Tomatoes does not have an easily accessible public API for this kind of d
 
 Before running the scraper, you need the following installed on your system:
 - **Python 3.x**
-- **Selenium**
-- **ChromeDriver** (compatible with your version of Chrome)
 - **Pandas**
-- **BeautifulSoup**
+- **BeautifulSoup4**
+- **Requests**
 
 ### Step-by-Step Instructions
 
@@ -52,42 +47,42 @@ Before running the scraper, you need the following installed on your system:
    pip install -r requirements.txt
    ```
 
-3. **Download ChromeDriver**:
+3. **Run the Scraper**:
 
-   You need to download ChromeDriver and make sure it's compatible with your version of Google Chrome:
-   - Download ChromeDriver from [here](https://sites.google.com/chromium.org/driver/).
-   - After downloading, place the `chromedriver.exe` in your desired folder and update the path in the `scrape.py` file.
-
-4. **Run the Scraper**:
-
-   To run the scraper, execute the following command:
+   To run the scraper and save the data to a JSON file, execute the following command:
    ```bash
-   python scrape.py
+   python main.py
    ```
 
-   This will start the Selenium Chrome browser, navigate through the Rotten Tomatoes website, and begin scraping movie directors and ratings.
+   This will fetch the Rotten Tomatoes page (from the archive) and extract movie director names and ratings. The data will be saved in `movies_data.json`.
 
-5. **Analyze the Data**:
+4. **Analyze the Data**:
 
-   Once the scraping is completed, the data will be saved in a CSV file (`movies.csv`). To analyze the data and calculate the average rating for each director, you can run the analysis script:
+   Once the scraping is completed, you can analyze the data by running the analysis script:
    ```bash
    python analyze_directors.py
    ```
 
-   This script will output the directors and their average movie ratings, sorted in descending order. The results are saved in the `average_ratings_by_director.csv` file.
+   This script will:
+   - Calculate the average rating for each director.
+   - Display the top 10 and bottom 10 directors by average rating.
+   - Save the results to `top_10_directors.csv` and `bottom_10_directors.csv`.
 
 ---
 
 ## Key Files in This Repository
 
-- **scrape.py**: The main web scraping script using Selenium to extract movie director names and ratings from Rotten Tomatoes.
-- **analyze_directors.py**: A script to analyze the scraped data, calculate average movie ratings per director, and list them in descending order.
-- **movies.csv**: The raw CSV file containing scraped data for directors and ratings.
+- **main.py**: The web scraper script that fetches movie director names and ratings from the Rotten Tomatoes page and saves them to `movies_data.json`.
+- **analyze_directors.py**: A script to analyze the scraped data, calculate average movie ratings per director, and display the top and bottom 10 directors.
+- **movies_data.json**: The JSON file where scraped data is stored.
+- **top_10_directors.csv** & **bottom_10_directors.csv**: The results of the analysis, containing the top and bottom 10 directors based on average ratings.
 - **requirements.txt**: A file listing all necessary dependencies to run the project.
 
 ---
 
 ## Ethical Considerations
 
-Web scraping can place a load on the target website, so it's important to be respectful of the website's terms of service. This project respects the website by implementing pauses between requests to avoid overloading Rotten Tomatoes' servers. Users should verify that scraping Rotten Tomatoes complies with their terms of service before using the scraper extensively.
-See the ETHICS file for more details.
+Web scraping can put a load on websites, so it's important to respect the target website's terms of service. This project avoids overwhelming the website by using appropriate request headers and adding pauses between requests. The data is scraped from an archived version of the Rotten Tomatoes page, ensuring stable access without overloading the live site.
+
+Before running this scraper extensively, users should verify that scraping is compliant with the website’s terms of service.
+See the `ETHICS` file for more details.
