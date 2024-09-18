@@ -69,7 +69,7 @@ Before running the scraper, you need the following installed on your system:
 
 5. **Analyze the Data**:
 
-   Once the scraping is completed, the data will be saved in a CSV file (`directors_and_ratings.csv`). To analyze the data and calculate the average rating for each director, you can run the analysis script:
+   Once the scraping is completed, the data will be saved in a CSV file (`movies.csv`). To analyze the data and calculate the average rating for each director, you can run the analysis script:
    ```bash
    python analyze_directors.py
    ```
