@@ -90,15 +90,4 @@ Before running the scraper, you need the following installed on your system:
 ## Ethical Considerations
 
 Web scraping can place a load on the target website, so it's important to be respectful of the website's terms of service. This project respects the website by implementing pauses between requests to avoid overloading Rotten Tomatoes' servers. Users should verify that scraping Rotten Tomatoes complies with their terms of service before using the scraper extensively.
-
----
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
-
----
-
-Feel free to adjust the repository link and author information to match your project!
-
-Let me know if you need further customization!
+See the ETHICS file for more details.
